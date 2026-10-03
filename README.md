@@ -21,13 +21,13 @@ Additionally, QuickFixRide features an integrated **AI Smart Chatbot** powered b
 
 ## ✨ Key Features
 
-- **🚗 Ride Booking**: Easy booking flow with real-time route calculations, driver assignment, and ride tracking.
-- **🔧 On-Location & Workshop Servicing**: Schedule general car maintenance, comprehensive diagnostics, and periodic tune-ups.
-- **🧼 Doorstep Eco Car Wash**: Professional pressure & eco-friendly wash booked right at your location.
+- **🚗 Ride Booking**: Easy booking flow with real-time route calculations.
+- **🔧 On-Location Servicing**: Browse and schedule nearby mechanics for general car maintenance.
+- **🧼 Doorstep Eco Car Wash**: Book a professional wash right at your location.
 - **🤖 Smart AI Automotive Assistant**: Interactive chatbot powered by Google's Gemini LLM to guide users and answer vehicle care questions.
 - **🔐 Secure Authentication**: Token-based JSON Web Token (JWT) user authentication with password hashing via `bcryptjs`.
-- **📊 User Dashboard**: Real-time overview of active bookings, service history, and ride records.
-- **🤝 Business & Partner Program**: Dedicated portal for driver partners and B2B fleet management.
+- **📊 User Dashboard**: Real-time overview of your profile and active bookings.
+- **🤝 Partner Application**: Driver-partners can submit applications to join the platform.
 
 ---
 

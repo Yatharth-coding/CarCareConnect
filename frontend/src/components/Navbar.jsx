@@ -1,15 +1,43 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import api from '../utils/api';
 import '../assets/css/project.css';
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const token = localStorage.getItem('token');
+  const [currentUser, setCurrentUser] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem('user'));
+    } catch {
+      return null;
+    }
+  });
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    navigate('/');
+  useEffect(() => {
+    // Sync session on mount
+    api.get('/api/auth/me')
+      .then(res => {
+        if (res.data?.success) {
+          setCurrentUser(res.data.data);
+          localStorage.setItem('user', JSON.stringify(res.data.data));
+        }
+      })
+      .catch(() => {
+        setCurrentUser(null);
+        localStorage.removeItem('user');
+      });
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      await api.post('/api/auth/logout');
+    } catch (err) {
+      console.error('Logout error:', err);
+    }
+    localStorage.removeItem('user');
+    setCurrentUser(null);
+    navigate('/login');
   };
 
   return (
@@ -102,7 +130,7 @@ const Navbar = () => {
           </div>
         </li>
         <li className="nav-item">
-          {!token ? (
+          {!currentUser ? (
             <div className="signup" style={{ display: 'block' }}>
               <button id="login-btn" onClick={() => navigate('/login')}>Login</button>
             </div>

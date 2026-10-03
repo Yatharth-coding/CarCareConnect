@@ -1,27 +1,30 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../utils/api';
 import { useSnackbar } from '../context/SnackbarContext';
 import '../assets/css/styles.css';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const showSnackbar = useSnackbar();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
-      const { data } = await axios.post('http://localhost:3001/api/auth/login', {
-        email,
-        password,
-      });
-      localStorage.setItem('token', data.token);
+      const { data } = await api.post('/api/auth/login', { email, password });
+      if (data.user) {
+        localStorage.setItem('user', JSON.stringify(data.user));
+      }
       showSnackbar('Login successful!', 'success');
       navigate('/');
     } catch (err) {
       showSnackbar(err.response?.data?.error || 'Login failed', 'error');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -36,21 +39,25 @@ const Login = () => {
         </div>
         <div className="auth-form">
           <form onSubmit={handleSubmit}>
-            <input 
-              type="email" 
-              placeholder="Email" 
-              required 
+            <input
+              type="email"
+              placeholder="Email"
+              required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              aria-label="Email address"
             />
-            <input 
-              type="password" 
-              placeholder="Password" 
-              required 
+            <input
+              type="password"
+              placeholder="Password"
+              required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              aria-label="Password"
             />
-            <button type="submit" style={{ width: '350px' }}>Sign in</button>
+            <button type="submit" style={{ width: '350px' }} disabled={loading}>
+              {loading ? 'Signing in...' : 'Sign in'}
+            </button>
           </form>
           <br />
           <hr />

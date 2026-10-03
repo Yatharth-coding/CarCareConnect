@@ -44,7 +44,7 @@ header {
     position: relative;
 }
 /* for picf2 */
-.w-full h-auto overflow-hidden rounded-md shadow-xl sm:rounded-xl{
+.picf2-image {
     height: 300px;
     width: 568px;
 }
