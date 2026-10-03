@@ -24,6 +24,7 @@ const sendTokenResponse = (user, statusCode, res) => {
         .cookie('token', token, options)
         .json({
             success: true,
+            token, // Dual authentication support (for cross-domain deployments where 3rd party cookies may be restricted)
             user: {
                 id: user._id,
                 name: user.name,

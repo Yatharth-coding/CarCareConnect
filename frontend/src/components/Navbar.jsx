@@ -36,6 +36,7 @@ const Navbar = () => {
       console.error('Logout error:', err);
     }
     localStorage.removeItem('user');
+    localStorage.removeItem('token');
     setCurrentUser(null);
     navigate('/login');
   };

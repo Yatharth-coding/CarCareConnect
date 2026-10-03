@@ -16,13 +16,22 @@ const Login = () => {
     setLoading(true);
     try {
       const { data } = await api.post('/api/auth/login', { email, password });
+      if (data.token) {
+        localStorage.setItem('token', data.token);
+      }
       if (data.user) {
         localStorage.setItem('user', JSON.stringify(data.user));
       }
       showSnackbar('Login successful!', 'success');
       navigate('/');
     } catch (err) {
-      showSnackbar(err.response?.data?.error || 'Login failed', 'error');
+      const message =
+        err.response?.data?.error ||
+        err.response?.data?.message ||
+        (err.message === 'Network Error'
+          ? 'Cannot connect to server. Render backend may still be starting up (wake-up takes ~50s) or VITE_API_URL is misconfigured.'
+          : 'Invalid email or password.');
+      showSnackbar(message, 'error');
     } finally {
       setLoading(false);
     }

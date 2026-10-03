@@ -15,10 +15,12 @@ const ProtectedRoute = ({ children }) => {
           setAuthState('authorized');
         } else {
           localStorage.removeItem('user');
+          localStorage.removeItem('token');
           setAuthState('unauthorized');
         }
       } catch (error) {
         localStorage.removeItem('user');
+        localStorage.removeItem('token');
         setAuthState('unauthorized');
       }
     };

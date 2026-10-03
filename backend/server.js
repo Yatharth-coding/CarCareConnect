@@ -26,22 +26,34 @@ app.use(helmet());
 // Cookie parser for HttpOnly auth cookies
 app.use(cookieParser());
 
-// CORS - restrict origins
-const allowedOrigins = process.env.ALLOWED_ORIGINS
-    ? process.env.ALLOWED_ORIGINS.split(',')
-    : ['http://localhost:5173', 'http://localhost:3000'];
+// CORS - restrict origins with robust trimming and Vercel domain support
+const configuredOrigins = process.env.ALLOWED_ORIGINS
+    ? process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim().replace(/\/+$/, '')).filter(Boolean)
+    : [];
+
+const localOrigins = [
+    'http://localhost:5173',
+    'http://localhost:3000',
+    'http://localhost:5174',
+    'http://127.0.0.1:5173',
+    'http://127.0.0.1:3000'
+];
 
 app.use(cors({
     origin: function (origin, callback) {
-        // Allow requests with no origin (mobile apps, curl, etc.) in development
-        if (!origin && process.env.NODE_ENV !== 'production') {
+        // Allow requests with no origin (mobile apps, curl, etc.)
+        if (!origin) {
             return callback(null, true);
         }
-        if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
+        const cleanOrigin = origin.replace(/\/+$/, '');
+        if (
+            localOrigins.includes(cleanOrigin) ||
+            configuredOrigins.includes(cleanOrigin) ||
+            cleanOrigin.endsWith('.vercel.app')
+        ) {
+            return callback(null, true);
         }
+        callback(new Error(`Origin ${origin} not allowed by CORS`));
     },
     credentials: true
 }));

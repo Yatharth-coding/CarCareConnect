@@ -21,13 +21,23 @@ const Signup = () => {
     setLoading(true);
     try {
       const { data } = await api.post('/api/auth/register', { name, email, password });
+      if (data.token) {
+        localStorage.setItem('token', data.token);
+      }
       if (data.user) {
         localStorage.setItem('user', JSON.stringify(data.user));
       }
       showSnackbar('Account created successfully!', 'success');
       navigate('/');
     } catch (err) {
-      showSnackbar(err.response?.data?.error || 'Signup failed', 'error');
+      const message =
+        err.response?.data?.error ||
+        err.response?.data?.errors?.[0]?.msg ||
+        err.response?.data?.message ||
+        (err.message === 'Network Error'
+          ? 'Cannot connect to server. Render backend may still be starting up (wake-up takes ~50s) or VITE_API_URL is misconfigured.'
+          : 'Signup failed. Please try again.');
+      showSnackbar(message, 'error');
     } finally {
       setLoading(false);
     }
