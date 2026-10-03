@@ -1,7 +1,6 @@
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
-const rateLimit = require('express-rate-limit');
 const cookieParser = require('cookie-parser');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
@@ -47,45 +46,9 @@ app.use(cors({
     credentials: true
 }));
 
-// Rate limiting
-const generalLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100,
-    standardHeaders: true,
-    legacyHeaders: false,
-    message: { success: false, error: 'Too many requests, please try again later.' }
-});
-
-const authLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 20,
-    standardHeaders: true,
-    legacyHeaders: false,
-    message: { success: false, error: 'Too many auth attempts, please try again later.' }
-});
-
-const chatLimiter = rateLimit({
-    windowMs: 1 * 60 * 1000, // 1 minute
-    max: 10,
-    standardHeaders: true,
-    legacyHeaders: false,
-    message: { success: false, error: 'Too many chat requests, please try again later.' }
-});
-
-app.use(generalLimiter);
-
-// Body parsing with size limits
-app.use(express.json({ limit: '10kb' }));
-app.use(express.urlencoded({ extended: true, limit: '10kb' }));
-
-// Root endpoint
-app.get('/', (req, res) => {
-    res.status(200).json({
-        success: true,
-        message: 'QuickFixRide API is running',
-        healthCheck: '/api/health'
-    });
-});
+// Body parsing without restrictive request size limits
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Health check endpoint
 let dbConnected = false;
@@ -98,9 +61,9 @@ app.get('/api/health', (req, res) => {
     });
 });
 
-// Routes
-app.use('/api/auth', authLimiter, require('./routes/authRoutes'));
-app.use('/api/chat', chatLimiter, require('./routes/chatRoutes'));
+// Routes - no rate limiting applied
+app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api/chat', require('./routes/chatRoutes'));
 app.use('/api/config', require('./routes/configRoutes'));
 app.use('/api/bookings', require('./routes/bookingRoutes'));
 app.use('/api/contact', require('./routes/contactRoutes'));
