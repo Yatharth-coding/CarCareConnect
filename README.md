@@ -1,4 +1,4 @@
-# QuickFixRide 🚗💨
+# CarCareConnect 🚗💨
 
 > A comprehensive modern web platform for on-demand ride booking, doorstep vehicle maintenance, car care services, and smart AI assistance.
 
@@ -13,9 +13,9 @@
 
 ## 🌟 Overview
 
-**QuickFixRide** bridges the gap between everyday commuters, car owners, and professional automotive service providers. Whether you need an instant ride, doorstep vehicle diagnostics, periodic car maintenance, or a pressure wash, QuickFixRide brings automotive convenience directly to your fingertips.
+**CarCareConnect** bridges the gap between everyday commuters, car owners, and professional automotive service providers. Whether you need an instant ride, doorstep vehicle diagnostics, periodic car maintenance, or a pressure wash, CarCareConnect brings automotive convenience directly to your fingertips.
 
-Additionally, QuickFixRide features an integrated **AI Smart Chatbot** powered by Google Gemini, capable of answering queries regarding vehicle health, bookings, and platform guidance in real-time.
+Additionally, CarCareConnect features an integrated **AI Smart Chatbot** powered by Google Gemini, capable of answering queries regarding vehicle health, bookings, and platform guidance in real-time.
 
 ---
 
@@ -52,7 +52,7 @@ Additionally, QuickFixRide features an integrated **AI Smart Chatbot** powered b
 ## 📁 Repository Structure
 
 ```plaintext
-QuickFixRide/
+CarCareConnect/
 ├── backend/
 │   ├── config/             # MongoDB database connection configuration
 │   ├── controllers/        # Request handling logic (auth, chat, bookings)
@@ -83,7 +83,7 @@ QuickFixRide/
 
 ## 🚀 Getting Started
 
-Follow these steps to run QuickFixRide on your local machine:
+Follow these steps to run CarCareConnect on your local machine:
 
 ### Prerequisites
 - [Node.js](https://nodejs.org/) (version 18+ recommended)
@@ -95,8 +95,8 @@ Follow these steps to run QuickFixRide on your local machine:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/Yatharth-coding/QuickFixRide.git
-cd QuickFixRide
+git clone https://github.com/Yatharth-coding/CarCareConnect.git
+cd CarCareConnect
 ```
 
 ---
